@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LeftSki : MonoBehaviour {
+enum effectType {
+	RIPPLE
+};
+
+public class Effects : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
