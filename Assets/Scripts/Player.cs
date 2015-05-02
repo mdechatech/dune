@@ -18,6 +18,9 @@ public class Player : MonoBehaviour {
 	private float xSpeedFactor = 1.0f;
 
 	[SerializeField]
+	private float gravity = 9.81f;
+
+	[SerializeField]
 	private KeyCode leftSkiLeftKey;
 
 	[SerializeField]
@@ -40,9 +43,10 @@ public class Player : MonoBehaviour {
 	}
 
 	public float xSpeed;
+	public float ySpeed;
 
 	[HideInInspector]
-	public int height;
+	public float height;
 
 	void Start () {
 		skiBoundary = 5;
@@ -51,6 +55,7 @@ public class Player : MonoBehaviour {
 		rightSkiDirection = 0;
 		height = 0;
 		xSpeed = 0;
+		ySpeed = 0;
 	}
 	
 	// Update is called once per frame
@@ -64,10 +69,7 @@ public class Player : MonoBehaviour {
 		} else if (Input.GetKeyDown (rightSkiRightKey) && rightSkiDirection < skiBoundary) {
 			rightSkiDirection++;
 		}
-
-		if (height == 0) {
-
-		}
+	
 
 		if (Mathf.Abs (leftSkiDirection - rightSkiDirection) >= skiBoundary) {
 			Debug.Log("is kill");
@@ -84,5 +86,45 @@ public class Player : MonoBehaviour {
 		rightSki.transform.eulerAngles = new Vector3 (0.0f, 0.0f, Mathf.LerpAngle (rightSki.transform.eulerAngles.z, rightSkiAngle, 0.1f));
 
 		xSpeed = Mathf.Cos ((totalSkiAngle + 90.0f) * Mathf.Deg2Rad) * xSpeedFactor;
+
+		if (height < 0.0f) {
+			height = 0.0f;
+			ySpeed = 0.0f;
+		} else if (height > 0.0f) {
+			ySpeed -= gravity * Time.fixedDeltaTime;
+			height += ySpeed * Time.fixedDeltaTime;
+		}
+	}
+
+	public void onHitObstacle(Obstacle obstacle)
+	{
+		if (height == 0) {
+			Debug.Log ("t " + obstacle.type + ", w " + obstacle.width + ", x " + obstacle.xPos);
+			int halfWidth = obstacle.width >> 1;
+			
+			if (obstacle.xPos <= halfWidth && obstacle.xPos >= -halfWidth) {
+				switch (obstacle.type) {
+				case Obstacle.obstacleType.BUMP:
+					leftSkiDirection += Random.Range(-2, 3);
+					leftSkiDirection = (Mathf.Abs(leftSkiDirection) % skiBoundary) * ((leftSkiDirection < 0) ? -1 : 1);
+					rightSkiDirection += Random.Range(-2, 3);
+					rightSkiDirection %= (Mathf.Abs(rightSkiDirection) % skiBoundary) * ((rightSkiDirection < 0) ? -1 : 1);
+					break;
+					
+				case Obstacle.obstacleType.RAMP:
+					ySpeed += 10;
+					height += 0.001f;
+					break;
+					
+				case Obstacle.obstacleType.ROCK:
+					Debug.Log("Hit rock?!!?");
+					break;
+					
+				default:
+					Debug.LogWarning("Player hit an obstacle with unknown behavior.", obstacle);
+					break;
+				}
+			}
+		}
 	}
 }

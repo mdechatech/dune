@@ -8,6 +8,12 @@ public class Spawner : MonoBehaviour {
 	public List<GameObject> obstacles;
 	public List<GameObject> effects;
 
+	private Player player;
+
+	void Awake() {
+		player = GameObject.Find ("Player").GetComponent<Player> ();
+	}
+
 	void Start () {
 		
 	}
@@ -23,6 +29,7 @@ public class Spawner : MonoBehaviour {
 	
 		for (int i = obstacles.Count-1; i >= 0; i--) {
 			if (obstacles[i].GetComponent<Obstacle>().distance < 0){
+				player.onHitObstacle(obstacles[i].GetComponent<Obstacle>());
 				Destroy(obstacles[i]);
 				obstacles.RemoveAt(i);
 			}
