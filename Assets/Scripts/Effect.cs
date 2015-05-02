@@ -4,7 +4,7 @@ using System.Collections;
 
 public class Effect : MonoBehaviour {
 	public enum effectType{
-		RIPPLE_ONE, RIPPLE_TWO, RIPPLE_THREE, CLOUD_SHADOW
+		RIPPLE_ONE, RIPPLE_TWO, RIPPLE_THREE, CLOUD_SHADOW, CLOUD
 	};
 	private static int horizonDistance = 1000;
 	private static int horizonWidth = 1000;
@@ -36,9 +36,13 @@ public class Effect : MonoBehaviour {
 	void FixedUpdate () {
 		distance -= player.speed;
 		xPos -= player.direction;
-		sprite.sortingOrder = -2000;
-		
-		transform.position = new Vector3 (xPos*40 / (float)horizonWidth * (horizonDistance - distance) / 500.0F, 5 - 5 * (horizonDistance / (float)((distance+100)*2)), 0);
-		transform.localScale += new Vector3 (0.05F, 0.01F, 0.01F);
+		sprite.sortingOrder = -distance;
+		if (type != effectType.CLOUD) {
+			transform.position = new Vector3 (xPos * 40 / (float)horizonWidth * (horizonDistance - distance) / 500.0F, 5 - 5 * (horizonDistance / (float)((distance + 100) * 2)), 0);
+			transform.localScale += new Vector3 (0.05F, 0.01F, 0.01F);
+		} else {
+			transform.position = new Vector3 (xPos * 40 / (float)horizonWidth * (horizonDistance - distance) / 500.0F, 1 + 5 * (horizonDistance / (float)((distance + 100))), 0);
+			transform.localScale += new Vector3 (0.01F, 0.01F, 0.01F);
 		}
+	}
 }
