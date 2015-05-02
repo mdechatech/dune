@@ -20,14 +20,17 @@ public class Effect : MonoBehaviour {
 	void Start () {
 		xPos = Random.Range (-horizonWidth, horizonWidth);
 		distance = horizonDistance;
-		player = GameObject.Find ("Player").GetComponent<Player>();
+		transform.localScale = new Vector3 (0.01F, 0.01F, 0.01F);
+		transform.position = new Vector2 (0, 0);
+		player = GameObject.Find ("Player").GetComponent<Player> ();
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		distance -= player.speed;
 		xPos -= player.direction;
-
-
+		
+		//transform.position = new Vector2 (xPos/(float)horizonWidth * Screen.width, distance/(float)horizonDistance * Screen.height);
+		transform.localScale += new Vector3 (0.01F, 0.01F, 0.01F);
 	}
 }
