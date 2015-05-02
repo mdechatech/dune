@@ -15,6 +15,9 @@ public class Player : MonoBehaviour {
 	[Header("Controls")]
 
 	[SerializeField]
+	private float xSpeedFactor = 1.0f;
+
+	[SerializeField]
 	private KeyCode leftSkiLeftKey;
 
 	[SerializeField]
@@ -36,6 +39,9 @@ public class Player : MonoBehaviour {
 		get { return leftSkiDirection + rightSkiDirection; }
 	}
 
+	public float xSpeed;
+
+	[HideInInspector]
 	public int height;
 
 	void Start () {
@@ -44,6 +50,7 @@ public class Player : MonoBehaviour {
 		leftSkiDirection = 0;
 		rightSkiDirection = 0;
 		height = 0;
+		xSpeed = 0;
 	}
 	
 	// Update is called once per frame
@@ -62,15 +69,20 @@ public class Player : MonoBehaviour {
 
 		}
 
-
+		if (Mathf.Abs (leftSkiDirection - rightSkiDirection) >= skiBoundary) {
+			Debug.Log("is kill");
+		}
 	}
 
 	void FixedUpdate()
 	{
 		float leftSkiAngle = (45.0f / (float)(skiBoundary - 1)) * -leftSkiDirection;
 		float rightSkiAngle = (45.0f / (float)(skiBoundary - 1)) * -rightSkiDirection;
+		float totalSkiAngle = (45.0f / (float)(skiBoundary - 1)) * (leftSkiDirection + rightSkiDirection) / 2.0f;
 
 		leftSki.transform.eulerAngles = new Vector3 (0.0f, 0.0f, Mathf.LerpAngle (leftSki.transform.eulerAngles.z, leftSkiAngle, 0.1f));
 		rightSki.transform.eulerAngles = new Vector3 (0.0f, 0.0f, Mathf.LerpAngle (rightSki.transform.eulerAngles.z, rightSkiAngle, 0.1f));
+
+		xSpeed = Mathf.Cos ((totalSkiAngle + 90.0f) * Mathf.Deg2Rad) * xSpeedFactor;
 	}
 }
