@@ -99,7 +99,6 @@ public class Player : MonoBehaviour {
 	public void onHitObstacle(Obstacle obstacle)
 	{
 		if (height == 0) {
-			Debug.Log ("t " + obstacle.type + ", w " + obstacle.width + ", x " + obstacle.xPos);
 			int halfWidth = obstacle.width >> 1;
 			
 			if (obstacle.xPos <= halfWidth && obstacle.xPos >= -halfWidth) {
