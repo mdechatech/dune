@@ -4,7 +4,7 @@ using System.Collections;
 
 public class Obstacle : MonoBehaviour {
 	public enum obstacleType{
-		ROCK, RAMP, BUMP, CABBAGES
+		ROCK, RAMP, BUMP, TRACK, CABBAGES
 	};
 	private static int horizonDistance = 1000;
 	private static int horizonWidth = 1000;
@@ -29,6 +29,8 @@ public class Obstacle : MonoBehaviour {
 	// Use this for initialization
 	void Start () { 
 		xPos = (int) Random.Range (-horizonWidth, horizonWidth) ;
+		if (type == obstacleType.TRACK)
+			xPos = 0;
 		hasCollided = false;
 		distance = horizonDistance;
 		///transform.localScale = new Vector3 (0.01F, 0.01F, 0.01F);
@@ -48,7 +50,7 @@ public class Obstacle : MonoBehaviour {
 		xPos += (int)(player.xSpeed * 100);
 		sprite.sortingOrder = -distance;
 		//Vector3 center = transform.
-		transform.position = new Vector3 (xPos*40 / (float)horizonWidth * (horizonDistance - distance) / 500.0F, 4 - 5 * (horizonDistance / (float)((1+distance)*2)), 0);
+		transform.position = new Vector3 (xPos*40 / (float)horizonWidth * (horizonDistance - distance) / 500.0F, 4 - 5 * (horizonDistance / (float)((distance+100)*2)), 0);
 		transform.localScale += new Vector3 (0.00001F * (horizonDistance-distance), 0.00001F * (horizonDistance-distance), 0.00001F * (horizonDistance-distance));
 
 	}

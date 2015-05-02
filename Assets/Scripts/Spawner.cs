@@ -18,15 +18,17 @@ public class Spawner : MonoBehaviour {
 		
 	}
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		int temp = Random.Range (0, 5);
 		if (temp == 0)
-			obstacles.Add (Instantiate (obstaclePrefabs [Random.Range (0, obstaclePrefabs.Length)]));
+			obstacles.Add (Instantiate (obstaclePrefabs [Random.Range (0, obstaclePrefabs.Length-1)]));
 
 		temp = Random.Range (0, 10);
 		if (temp == 0)
 			effects.Add (Instantiate (effectPrefabs [Random.Range(0, effectPrefabs.Length)]));
 	
+		//obstacles.Add (Instantiate (obstaclePrefabs [obstaclePrefabs.Length - 1]));
+
 		for (int i = obstacles.Count-1; i >= 0; i--) {
 			Obstacle obstacle = obstacles[i].GetComponent<Obstacle>();
 			if (obstacle.distance < 200){
@@ -36,7 +38,7 @@ public class Spawner : MonoBehaviour {
 					obstacle.hasCollided = true;
 				}
 			}
-			if(obstacle.distance < 0)
+			if(obstacle.distance < 10)
 			{
 				Destroy(obstacles[i]);
 				obstacles.RemoveAt(i);
