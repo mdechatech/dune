@@ -14,6 +14,9 @@ public class Player : MonoBehaviour {
 	[Header("Controls")]
 
 	[SerializeField]
+	private int lives = 3;
+
+	[SerializeField]
 	private float crissCrossTimeLimit = 3.0f;
 
 	[SerializeField]
@@ -81,6 +84,8 @@ public class Player : MonoBehaviour {
 
 		score = 0;
 		parallelTimer = 0.0f;
+
+		mainUI.lifeCounter.setLives (lives);
 	}
 	
 	// Update is called once per frame
@@ -128,7 +133,7 @@ public class Player : MonoBehaviour {
 
 				if(parallelTimer / crissCrossTimeLimit >= 1.0f)
 				{
-					Debug.Log("NOW KILL");
+					die ();
 				}
 				
 			} 
@@ -202,7 +207,9 @@ public class Player : MonoBehaviour {
 					break;
 					
 				case Obstacle.obstacleType.ROCK:
-					Debug.Log("Hit rock?!!?");
+					lives--;
+					mainUI.lifeCounter.setLives(lives);
+					if(lives <= 0) die();
 					break;
 					
 				default:
@@ -211,5 +218,10 @@ public class Player : MonoBehaviour {
 				}
 			}
 		}
+	}
+
+	public void die()
+	{
+		Application.LoadLevel("Menu");
 	}
 }
