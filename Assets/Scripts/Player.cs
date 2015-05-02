@@ -14,6 +14,9 @@ public class Player : MonoBehaviour {
 	[Header("Controls")]
 
 	[SerializeField]
+	private float crissCrossTimeLimit = 3.0f;
+
+	[SerializeField]
 	private int skiIntervals = 4;
 
 	[SerializeField]
@@ -64,6 +67,8 @@ public class Player : MonoBehaviour {
 	[HideInInspector]
 	public int score;
 
+	private float parallelTimer;
+
 	void Start () {
 		mainUI.scoreText.text = "0";
 
@@ -75,6 +80,7 @@ public class Player : MonoBehaviour {
 		ySpeed = 0;
 
 		score = 0;
+		parallelTimer = 0.0f;
 	}
 	
 	// Update is called once per frame
@@ -113,9 +119,22 @@ public class Player : MonoBehaviour {
 			}
 		}
 	
+		if (Mathf.Abs (leftSkiDirection - rightSkiDirection) > skiIntervals) {
+			if (height <= 0.0f) {
+				mainUI.parallelWarning.activate ();
+				mainUI.parallelWarning.fill(Mathf.Clamp(parallelTimer / crissCrossTimeLimit, 0.0f, 1.0f));
+				
+				parallelTimer += Time.deltaTime;
 
-		if (height > 0.0f && Mathf.Abs (leftSkiDirection - rightSkiDirection) > skiIntervals) {
-			Debug.Log("is kill");
+				if(parallelTimer / crissCrossTimeLimit >= 1.0f)
+				{
+					Debug.Log("NOW KILL");
+				}
+				
+			} 
+		} else {
+			mainUI.parallelWarning.deactivate();
+			parallelTimer = 0.0f;
 		}
 
 		mainUI.scoreText.text = score.ToString();
