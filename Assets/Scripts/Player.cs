@@ -100,7 +100,8 @@ public class Player : MonoBehaviour {
 		if (height == 0) {
 			int halfWidth = obstacle.width >> 1;
 			
-			if (obstacle.xPos <= halfWidth && obstacle.xPos >= -halfWidth) {
+			if ((obstacle.xPos <= halfWidth && obstacle.xPos >= -halfWidth && obstacle.type != Obstacle.obstacleType.TRACK) ||
+				(obstacle.xPos >= halfWidth && obstacle.xPos <= -halfWidth)){
 				switch (obstacle.type) {
 				case Obstacle.obstacleType.BUMP:
 					leftSkiDirection += Random.Range(-2, 3);
