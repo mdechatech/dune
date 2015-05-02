@@ -9,18 +9,27 @@ public class Obstacle : MonoBehaviour {
 	private static int horizonDistance = 1000;
 	private static int horizonWidth = 1000;
 
+	[HideInInspector]
 	public int distance;
 	public int xPos;
 	public int width;
 	public obstacleType type;
 	
 	public Player player;
+	[HideInInspector]
+	public bool hasCollided;
 
 	private SpriteRenderer sprite;
+
+	void Awake()
+	{
+		distance = horizonDistance;
+	}
 
 	// Use this for initialization
 	void Start () { 
 		xPos = (int) Random.Range (-horizonWidth, horizonWidth) ;
+		hasCollided = false;
 		distance = horizonDistance;
 		///transform.localScale = new Vector3 (0.01F, 0.01F, 0.01F);
 		player = GameObject.Find ("Player").GetComponent<Player> ();

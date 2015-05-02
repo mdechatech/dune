@@ -2,8 +2,6 @@
 using System.Collections;
 
 public class Player : MonoBehaviour {
-	public static int skiBoundary;
-
 	[Header("Objects")]
 
 	[SerializeField]
@@ -13,6 +11,9 @@ public class Player : MonoBehaviour {
 	private GameObject rightSki;
 
 	[Header("Controls")]
+
+	[SerializeField]
+	private int skiIntervals = 4;
 
 	[SerializeField]
 	private float xSpeedFactor = 1.0f;
@@ -49,7 +50,6 @@ public class Player : MonoBehaviour {
 	public float height;
 
 	void Start () {
-		skiBoundary = 5;
 		speed = 10;
 		leftSkiDirection = 0;
 		rightSkiDirection = 0;
@@ -60,33 +60,32 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (leftSkiLeftKey) && leftSkiDirection > -skiBoundary) {
+		if (Input.GetKeyDown (leftSkiLeftKey) && leftSkiDirection > -skiIntervals) {
 			leftSkiDirection--;
-		} else if (Input.GetKeyDown (leftSkiRightKey) && leftSkiDirection < skiBoundary) {
+		} else if (Input.GetKeyDown (leftSkiRightKey) && leftSkiDirection < skiIntervals) {
 			leftSkiDirection++;
-		} else if (Input.GetKeyDown (rightSkiLeftKey) && rightSkiDirection > -skiBoundary) {
+		} else if (Input.GetKeyDown (rightSkiLeftKey) && rightSkiDirection > -skiIntervals) {
 			rightSkiDirection--;
-		} else if (Input.GetKeyDown (rightSkiRightKey) && rightSkiDirection < skiBoundary) {
+		} else if (Input.GetKeyDown (rightSkiRightKey) && rightSkiDirection < skiIntervals) {
 			rightSkiDirection++;
 		}
 	
 
-		if (Mathf.Abs (leftSkiDirection - rightSkiDirection) >= skiBoundary) {
+		if (Mathf.Abs (leftSkiDirection - rightSkiDirection) >= skiIntervals) {
 			Debug.Log("is kill");
 		}
 	}
 
 	void FixedUpdate()
 	{
-		float leftSkiAngle = (45.0f / (float)(skiBoundary - 1)) * -leftSkiDirection;
-		float rightSkiAngle = (45.0f / (float)(skiBoundary - 1)) * -rightSkiDirection;
-		float totalSkiAngle = (45.0f / (float)(skiBoundary - 1)) * (leftSkiDirection + rightSkiDirection) / 2.0f;
+		float leftSkiAngle = (45.0f / (float)(skiIntervals)) * -leftSkiDirection;
+		float rightSkiAngle = (45.0f / (float)(skiIntervals)) * -rightSkiDirection;
+		float totalSkiAngle = (45.0f / (float)(skiIntervals)) * (leftSkiDirection + rightSkiDirection) / 2.0f;
 
 		leftSki.transform.eulerAngles = new Vector3 (0.0f, 0.0f, Mathf.LerpAngle (leftSki.transform.eulerAngles.z, leftSkiAngle, 0.1f));
 		rightSki.transform.eulerAngles = new Vector3 (0.0f, 0.0f, Mathf.LerpAngle (rightSki.transform.eulerAngles.z, rightSkiAngle, 0.1f));
 
 		xSpeed = Mathf.Cos ((totalSkiAngle + 90.0f) * Mathf.Deg2Rad) * xSpeedFactor;
-
 		if (height < 0.0f) {
 			height = 0.0f;
 			ySpeed = 0.0f;
@@ -105,9 +104,9 @@ public class Player : MonoBehaviour {
 				switch (obstacle.type) {
 				case Obstacle.obstacleType.BUMP:
 					leftSkiDirection += Random.Range(-2, 3);
-					leftSkiDirection = (Mathf.Abs(leftSkiDirection) % skiBoundary) * ((leftSkiDirection < 0) ? -1 : 1);
+					leftSkiDirection = (Mathf.Abs(leftSkiDirection) % (skiIntervals + 1)) * ((leftSkiDirection < 0) ? -1 : 1);
 					rightSkiDirection += Random.Range(-2, 3);
-					rightSkiDirection %= (Mathf.Abs(rightSkiDirection) % skiBoundary) * ((rightSkiDirection < 0) ? -1 : 1);
+					rightSkiDirection %= (Mathf.Abs(rightSkiDirection) % (skiIntervals + 1)) * ((rightSkiDirection < 0) ? -1 : 1);
 					break;
 					
 				case Obstacle.obstacleType.RAMP:
