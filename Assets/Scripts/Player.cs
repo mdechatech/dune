@@ -67,7 +67,7 @@ public class Player : MonoBehaviour {
 	void Start () {
 		mainUI.scoreText.text = "0";
 
-		speed = 20;
+		speed = 8;
 		leftSkiDirection = 0;
 		rightSkiDirection = 0;
 		height = 0;
@@ -179,6 +179,7 @@ public class Player : MonoBehaviour {
 				case Obstacle.obstacleType.RAMP:
 					ySpeed += 10 * (speed / 10.0f);
 					height += 0.001f;
+					speed++;
 					break;
 					
 				case Obstacle.obstacleType.ROCK:
