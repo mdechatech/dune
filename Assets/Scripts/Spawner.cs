@@ -19,7 +19,7 @@ public class Spawner : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-		int temp = Random.Range (0, 20);
+		int temp = Random.Range (0, 5);
 		if (temp == 0)
 			obstacles.Add (Instantiate (obstaclePrefabs [Random.Range (0, obstaclePrefabs.Length)]));
 
@@ -28,14 +28,14 @@ public class Spawner : MonoBehaviour {
 			effects.Add (Instantiate (effectPrefabs [Random.Range(0, effectPrefabs.Length)]));
 	
 		for (int i = obstacles.Count-1; i >= 0; i--) {
-			if (obstacles[i].GetComponent<Obstacle>().distance < 0){
+			if (obstacles[i].GetComponent<Obstacle>().distance < 100){
 				player.onHitObstacle(obstacles[i].GetComponent<Obstacle>());
 				Destroy(obstacles[i]);
 				obstacles.RemoveAt(i);
 			}
 		}
 		for (int i = effects.Count-1; i >= 0; i--) {
-			if (effects[i].GetComponent<Effect>().distance < 0){
+			if (effects[i].GetComponent<Effect>().distance < 100){
 				Destroy(effects[i]);
 				effects.RemoveAt(i);
 			}
