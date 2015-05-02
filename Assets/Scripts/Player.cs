@@ -7,7 +7,7 @@ public class Player : MonoBehaviour {
 	public int speed;
 	public int leftSkiDirection;
 	public int rightSkiDirection;
-	public int getDirection {
+	public int direction {
 		get { return leftSkiDirection + rightSkiDirection; }
 	}
 	public int height;
