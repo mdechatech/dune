@@ -51,10 +51,11 @@ public class Carousel : MonoBehaviour {
 
 	public void removeObject(int index)
 	{
+		Destroy (objects [index].gameObject, 1.0f);
+		garbage.Add (objects [index]);
+
 		objects.RemoveAt (index);
 		timers.RemoveAt (index);
-
-		garbage.Add (objects [index]);
 	}
 
 	// Use this for initialization
@@ -77,7 +78,13 @@ public class Carousel : MonoBehaviour {
 
 		for(int i = garbage.Count - 1; i >= 0; i--)
 		{
-
+			if(garbage[i].gameObject != null)
+			{
+				garbage[i].position = Vector3.Lerp(garbage[i].position, garbage[i].position - new Vector3(100.0f, 0.0f, 0.0f),
+				                                   Time.deltaTime * animationSpeed * 10.0f);
+			} else {
+				garbage.RemoveAt(i);
+			}
 		}
 	}
 }

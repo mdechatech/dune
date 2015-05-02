@@ -84,6 +84,7 @@ public class Player : MonoBehaviour {
 			if(height > 0.0f)
 			{
 				mainUI.carousel.addTrick("RAD SKI WOBBLE 180", 5);
+				score += 5;
 			}
 
 		} else if (Input.GetKeyDown (leftSkiRightKey) && leftSkiDirection < skiIntervals) {
@@ -92,6 +93,7 @@ public class Player : MonoBehaviour {
 			if(height > 0.0f)
 			{
 				mainUI.carousel.addTrick("RAD SKI WOBBLE 180", 5);
+				score += 5;
 			}
 		} else if (Input.GetKeyDown (rightSkiLeftKey) && rightSkiDirection > -skiIntervals) {
 			rightSkiDirection--;
@@ -99,6 +101,7 @@ public class Player : MonoBehaviour {
 			if(height > 0.0f)
 			{
 				mainUI.carousel.addTrick("RAD SKI WOBBLE 180", 5);
+				score += 5;
 			}
 		} else if (Input.GetKeyDown (rightSkiRightKey) && rightSkiDirection < skiIntervals) {
 			rightSkiDirection++;
@@ -106,13 +109,16 @@ public class Player : MonoBehaviour {
 			if(height > 0.0f)
 			{
 				mainUI.carousel.addTrick("RAD SKI WOBBLE 180", 5);
+				score += 5;
 			}
 		}
 	
 
-		if (Mathf.Abs (leftSkiDirection - rightSkiDirection) > skiIntervals) {
+		if (height > 0.0f && Mathf.Abs (leftSkiDirection - rightSkiDirection) > skiIntervals) {
 			Debug.Log("is kill");
 		}
+
+		mainUI.scoreText.text = score.ToString();
 	}
 
 	void FixedUpdate()
@@ -125,6 +131,11 @@ public class Player : MonoBehaviour {
 		rightSki.transform.eulerAngles = new Vector3 (0.0f, 0.0f, Mathf.LerpAngle (rightSki.transform.eulerAngles.z, rightSkiAngle, 0.1f));
 
 		if (height < 0.0f) {
+			if(leftSkiDirection - rightSkiDirection <= 1)
+			{
+				mainUI.carousel.addTrick("PARALLEL LANDING!", 400);
+				score += 400;
+			}
 			height = 0.0f;
 			ySpeed = 0.0f;
 		}
@@ -134,7 +145,6 @@ public class Player : MonoBehaviour {
 			xSpeed = Mathf.Lerp(xSpeed, targetXSpeed, xAcceleration * Time.fixedDeltaTime);
 		} else if (height > 0.0f) {
 			score++;
-			mainUI.scoreText.text = score.ToString();
 
 			ySpeed -= gravity * Time.fixedDeltaTime;
 			height += ySpeed * Time.fixedDeltaTime;
@@ -145,6 +155,16 @@ public class Player : MonoBehaviour {
 	{
 		if (height == 0) {
 			int halfWidth = obstacle.width >> 1;
+
+			if(obstacle.type == Obstacle.obstacleType.ROCK)
+			{
+				int nearWidth = Mathf.Abs(obstacle.xPos) - halfWidth;
+				if(nearWidth > 0 && nearWidth <= 100)
+				{
+					mainUI.carousel.addTrick("NEAR MISS!", 50);
+					score += 50;
+				}
+			}
 			
 			if ((obstacle.xPos <= halfWidth && obstacle.xPos >= -halfWidth && obstacle.type != Obstacle.obstacleType.TRACK) ||
 				(obstacle.xPos >= halfWidth && obstacle.xPos <= -halfWidth)){
