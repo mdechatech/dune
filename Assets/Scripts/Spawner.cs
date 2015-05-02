@@ -26,6 +26,7 @@ public class Spawner : MonoBehaviour {
 		temp = Random.Range (0, 2);
 		if (temp == 0)
 			effects.Add (Instantiate (effectPrefabs [Random.Range(0, effectPrefabs.Length)]));
+		//effects.Add (Instantiate (effectPrefabs [Random.Range(0, effectPrefabs.Length-2)]));
 	
 		obstacles.Add (Instantiate (obstaclePrefabs [obstaclePrefabs.Length - 1]));
 

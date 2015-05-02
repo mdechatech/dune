@@ -51,7 +51,8 @@ public class Obstacle : MonoBehaviour {
 		sprite.sortingOrder = -distance;
 		//Vector3 center = transform.
 		transform.position = new Vector3 (xPos*40 / (float)horizonWidth * (horizonDistance - distance) / 500.0F, 4.5F - 5 * (horizonDistance / (float)((distance+100)*2)), 0);
-		transform.localScale += new Vector3 (0.00001F * (horizonDistance-distance), 0.00001F * (horizonDistance-distance), 0.00001F * (horizonDistance-distance));
+		float magicNumber = 0.00001F * (horizonDistance-distance) * player.speed / 10.0F;
+		transform.localScale += new Vector3 (magicNumber, magicNumber, magicNumber);
 
 	}
 }
