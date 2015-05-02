@@ -4,12 +4,38 @@ using System.Collections;
 public class Player : MonoBehaviour {
 	public static int skiBoundary;
 
+	[Header("Objects")]
+
+	[SerializeField]
+	private GameObject leftSki;
+
+	[SerializeField]
+	private GameObject rightSki;
+
+	[Header("Controls")]
+
+	[SerializeField]
+	private KeyCode leftSkiLeftKey;
+
+	[SerializeField]
+	private KeyCode leftSkiRightKey;
+
+	[SerializeField]
+	private KeyCode rightSkiLeftKey;
+
+	[SerializeField]
+	private KeyCode rightSkiRightKey;
+
+	[HideInInspector]
 	public int speed;
+	[HideInInspector]
 	public int leftSkiDirection;
+	[HideInInspector]
 	public int rightSkiDirection;
 	public int direction {
 		get { return leftSkiDirection + rightSkiDirection; }
 	}
+
 	public int height;
 
 	void Start () {
@@ -22,13 +48,13 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.Q) && leftSkiDirection > -skiBoundary) {
+		if (Input.GetKeyDown (leftSkiLeftKey) && leftSkiDirection > -skiBoundary) {
 			leftSkiDirection--;
-		} else if (Input.GetKeyDown (KeyCode.W) && leftSkiDirection < skiBoundary) {
+		} else if (Input.GetKeyDown (leftSkiRightKey) && leftSkiDirection < skiBoundary) {
 			leftSkiDirection++;
-		} else if (Input.GetKeyDown (KeyCode.O) && rightSkiDirection > -skiBoundary) {
+		} else if (Input.GetKeyDown (rightSkiLeftKey) && rightSkiDirection > -skiBoundary) {
 			rightSkiDirection--;
-		} else if (Input.GetKeyDown (KeyCode.P) && rightSkiDirection < skiBoundary) {
+		} else if (Input.GetKeyDown (rightSkiRightKey) && rightSkiDirection < skiBoundary) {
 			rightSkiDirection++;
 		}
 
@@ -37,5 +63,14 @@ public class Player : MonoBehaviour {
 		}
 
 
+	}
+
+	void FixedUpdate()
+	{
+		float leftSkiAngle = (45.0f / (float)(skiBoundary - 1)) * -leftSkiDirection;
+		float rightSkiAngle = (45.0f / (float)(skiBoundary - 1)) * -rightSkiDirection;
+
+		leftSki.transform.eulerAngles = new Vector3 (0.0f, 0.0f, Mathf.LerpAngle (leftSki.transform.eulerAngles.z, leftSkiAngle, 0.1f));
+		rightSki.transform.eulerAngles = new Vector3 (0.0f, 0.0f, Mathf.LerpAngle (rightSki.transform.eulerAngles.z, rightSkiAngle, 0.1f));
 	}
 }
