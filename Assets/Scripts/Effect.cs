@@ -20,7 +20,7 @@ public class Effect : MonoBehaviour {
 	void Start () {
 		xPos = Random.Range (-horizonWidth, horizonWidth);
 		distance = horizonDistance;
-		transform.localScale = new Vector3 (0.01F, 0.01F, 0.01F);
+		///transform.localScale = new Vector3 (0.01F, 0.01F, 0.01F);
 		transform.position = new Vector2 (0, 0);
 		player = GameObject.Find ("Player").GetComponent<Player> ();
 	}

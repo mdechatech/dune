@@ -13,11 +13,11 @@ public class Spawner : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
-		int temp = Random.Range (0, 50);
+		int temp = Random.Range (0, 20);
 		if (temp == 0)
 			obstacles.Add (Instantiate (obstaclePrefabs [Random.Range (0, obstaclePrefabs.Length)]));
 
-		temp = Random.Range (0, 50);
+		temp = Random.Range (0, 10);
 		if (temp == 0)
 			effects.Add (Instantiate (effectPrefabs [Random.Range(0, effectPrefabs.Length)]));
 	

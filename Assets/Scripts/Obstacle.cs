@@ -16,22 +16,30 @@ public class Obstacle : MonoBehaviour {
 	
 	public Player player;
 
+	private SpriteRenderer sprite;
+
 	// Use this for initialization
 	void Start () { 
 		xPos = Random.Range (-horizonWidth, horizonWidth);
 		distance = horizonDistance;
-		transform.localScale = new Vector3 (0.01F, 0.01F, 0.01F);
-		transform.position = new Vector2 (0, 0);
+		///transform.localScale = new Vector3 (0.01F, 0.01F, 0.01F);
 		player = GameObject.Find ("Player").GetComponent<Player> ();
+
+		foreach (Transform child in transform) {
+			sprite = child.gameObject.GetComponent<SpriteRenderer>();
+			break;
+		}
+
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 		distance -= player.speed;
 		xPos -= player.direction;
+		sprite.sortingOrder = -distance;
 
-		//transform.position = new Vector2 (xPos/(float)horizonWidth * Screen.width, distance/(float)horizonDistance * Screen.height);
-		transform.localScale += new Vector3 (0.01F, 0.01F, 0.01F);
+		transform.position = new Vector3 (xPos*10 / (float)horizonWidth, 3 - 5 * (horizonDistance / (float)(distance*2)), 0);
+		transform.localScale += new Vector3 (0.00001F * (horizonDistance-distance), 0.00001F * (horizonDistance-distance), 0.00001F * (horizonDistance-distance));
 
 	}
 }
