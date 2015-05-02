@@ -39,7 +39,7 @@ public class Player : MonoBehaviour {
 
 	[Header("UI")]
 	[SerializeField]
-	private Text scoreText;
+	private MainUI mainUI;
 
 	[HideInInspector]
 	public int speed;
@@ -65,7 +65,7 @@ public class Player : MonoBehaviour {
 	public int score;
 
 	void Start () {
-		scoreText.text = "0";
+		mainUI.scoreText.text = "0";
 
 		speed = 10;
 		leftSkiDirection = 0;
@@ -78,15 +78,35 @@ public class Player : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () {		
 		if (Input.GetKeyDown (leftSkiLeftKey) && leftSkiDirection > -skiIntervals) {
 			leftSkiDirection--;
+			if(height > 0.0f)
+			{
+				mainUI.carousel.addTrick("RAD SKI WOBBLE 180", 5);
+			}
+
 		} else if (Input.GetKeyDown (leftSkiRightKey) && leftSkiDirection < skiIntervals) {
 			leftSkiDirection++;
+
+			if(height > 0.0f)
+			{
+				mainUI.carousel.addTrick("RAD SKI WOBBLE 180", 5);
+			}
 		} else if (Input.GetKeyDown (rightSkiLeftKey) && rightSkiDirection > -skiIntervals) {
 			rightSkiDirection--;
+
+			if(height > 0.0f)
+			{
+				mainUI.carousel.addTrick("RAD SKI WOBBLE 180", 5);
+			}
 		} else if (Input.GetKeyDown (rightSkiRightKey) && rightSkiDirection < skiIntervals) {
 			rightSkiDirection++;
+
+			if(height > 0.0f)
+			{
+				mainUI.carousel.addTrick("RAD SKI WOBBLE 180", 5);
+			}
 		}
 	
 
@@ -114,7 +134,7 @@ public class Player : MonoBehaviour {
 			xSpeed = Mathf.Lerp(xSpeed, targetXSpeed, xAcceleration * Time.fixedDeltaTime);
 		} else if (height > 0.0f) {
 			score++;
-			scoreText.text = score.ToString();
+			mainUI.scoreText.text = score.ToString();
 
 			ySpeed -= gravity * Time.fixedDeltaTime;
 			height += ySpeed * Time.fixedDeltaTime;
