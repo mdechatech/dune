@@ -67,7 +67,7 @@ public class Player : MonoBehaviour {
 	void Start () {
 		mainUI.scoreText.text = "0";
 
-		speed = 45;
+		speed = 8;
 		leftSkiDirection = 0;
 		rightSkiDirection = 0;
 		height = 0;
