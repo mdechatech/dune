@@ -14,23 +14,31 @@ public class Effect : MonoBehaviour {
 	public effectType type;
 	
 	public Player player;
+	
+	private SpriteRenderer sprite;
 
 
 	// Use this for initialization
 	void Start () {
 		xPos = Random.Range (-horizonWidth, horizonWidth);
 		distance = horizonDistance;
-		///transform.localScale = new Vector3 (0.01F, 0.01F, 0.01F);
+		transform.localScale = new Vector3 (0.01F, 0.01F, 0.01F);
 		transform.position = new Vector2 (0, 0);
 		player = GameObject.Find ("Player").GetComponent<Player> ();
+		
+		foreach (Transform child in transform) {
+			sprite = child.gameObject.GetComponent<SpriteRenderer>();
+			break;
+		}
 	}
 	
 	// Update is called once per frame
 	void FixedUpdate () {
 		distance -= player.speed;
 		xPos -= player.direction;
+		sprite.sortingOrder = -2000;
 		
-		//transform.position = new Vector2 (xPos/(float)horizonWidth * Screen.width, distance/(float)horizonDistance * Screen.height);
-		transform.localScale += new Vector3 (0.01F, 0.01F, 0.01F);
-	}
+		transform.position = new Vector3 (xPos* (horizonDistance-distance) / 20000.0F, 3 - 5 * (horizonDistance / (float)((1+distance)*2)), 0);
+		transform.localScale += new Vector3 (0.0001F * (horizonDistance-distance), 0.0001F * (horizonDistance-distance), 0.0001F * (horizonDistance-distance));
+		}
 }
