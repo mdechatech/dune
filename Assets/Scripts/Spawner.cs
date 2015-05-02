@@ -23,11 +23,11 @@ public class Spawner : MonoBehaviour {
 		if (temp == 0)
 			obstacles.Add (Instantiate (obstaclePrefabs [Random.Range (0, obstaclePrefabs.Length-1)]));
 
-		temp = Random.Range (0, 10);
+		temp = Random.Range (0, 2);
 		if (temp == 0)
 			effects.Add (Instantiate (effectPrefabs [Random.Range(0, effectPrefabs.Length)]));
 	
-		//obstacles.Add (Instantiate (obstaclePrefabs [obstaclePrefabs.Length - 1]));
+		obstacles.Add (Instantiate (obstaclePrefabs [obstaclePrefabs.Length - 1]));
 
 		for (int i = obstacles.Count-1; i >= 0; i--) {
 			Obstacle obstacle = obstacles[i].GetComponent<Obstacle>();
