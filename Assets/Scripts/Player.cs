@@ -84,5 +84,6 @@ public class Player : MonoBehaviour {
 		rightSki.transform.eulerAngles = new Vector3 (0.0f, 0.0f, Mathf.LerpAngle (rightSki.transform.eulerAngles.z, rightSkiAngle, 0.1f));
 
 		xSpeed = Mathf.Cos ((totalSkiAngle + 90.0f) * Mathf.Deg2Rad) * xSpeedFactor;
+		Debug.Log (xSpeed);
 	}
 }

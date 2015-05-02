@@ -20,7 +20,7 @@ public class Obstacle : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () { 
-		xPos = Random.Range (-horizonWidth, horizonWidth);
+		xPos = (int) Random.Range (0, 5) * horizonWidth / 5 * (2 * Random.Range(0,1) - 1);
 		distance = horizonDistance;
 		///transform.localScale = new Vector3 (0.01F, 0.01F, 0.01F);
 		player = GameObject.Find ("Player").GetComponent<Player> ();
@@ -35,10 +35,10 @@ public class Obstacle : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 		distance -= player.speed;
-		xPos -= player.direction;
+		xPos += (int)(player.xSpeed * 100);
 		sprite.sortingOrder = -distance;
 		//Vector3 center = transform.
-		transform.position = new Vector3 (xPos* (1 - distance / (float)horizonDistance) / 80, 3 - 5 * (horizonDistance / (float)((1+distance)*2)), 0);
+		transform.position = new Vector3 (xPos*40 / (float)horizonWidth * (horizonDistance - distance) / 500.0F, 3 - 5 * (horizonDistance / (float)((1+distance)*2)), 0);
 		transform.localScale += new Vector3 (0.00001F * (horizonDistance-distance), 0.00001F * (horizonDistance-distance), 0.00001F * (horizonDistance-distance));
 
 	}
