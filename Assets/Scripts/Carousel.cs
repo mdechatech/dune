@@ -18,10 +18,14 @@ public class Carousel : MonoBehaviour {
 	private List<Transform> objects;
 	private List<float> timers;
 
+	private List<Transform> garbage;
+
 	void Awake()
 	{
 		objects = new List<Transform>();
 		timers = new List<float> ();
+
+		garbage = new List<Transform> ();
 	}
 
 	public Trick addTrick(string description, int score)
@@ -39,17 +43,18 @@ public class Carousel : MonoBehaviour {
 
 		if (objects.Count == positions.Length) {
 			removeObject (0);
-		} else {
-			objects.Add (transform);
-			timers.Add(time);
 		}
+
+		objects.Add (transform);
+		timers.Add(time);
 	}
 
 	public void removeObject(int index)
 	{
 		objects.RemoveAt (index);
 		timers.RemoveAt (index);
-		Destroy(objects[index].gameObject);
+
+		garbage.Add (objects [index]);
 	}
 
 	// Use this for initialization
@@ -68,6 +73,11 @@ public class Carousel : MonoBehaviour {
 			{
 				removeObject(i);
 			}
+		}
+
+		for(int i = garbage.Count - 1; i >= 0; i--)
+		{
+
 		}
 	}
 }
