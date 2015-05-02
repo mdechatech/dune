@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Player : MonoBehaviour {
@@ -14,6 +15,9 @@ public class Player : MonoBehaviour {
 
 	[SerializeField]
 	private int skiIntervals = 4;
+
+	[SerializeField]
+	private float xAcceleration = 1.0f;
 
 	[SerializeField]
 	private float xSpeedFactor = 1.0f;
@@ -33,6 +37,10 @@ public class Player : MonoBehaviour {
 	[SerializeField]
 	private KeyCode rightSkiRightKey;
 
+	[Header("UI")]
+	[SerializeField]
+	private Text scoreText;
+
 	[HideInInspector]
 	public int speed;
 	[HideInInspector]
@@ -43,19 +51,30 @@ public class Player : MonoBehaviour {
 		get { return leftSkiDirection + rightSkiDirection; }
 	}
 
+	[HideInInspector]
 	public float xSpeed;
+	[HideInInspector]
 	public float ySpeed;
+
+	private float targetXSpeed;
 
 	[HideInInspector]
 	public float height;
 
+	[HideInInspector]
+	public int score;
+
 	void Start () {
+		scoreText.text = "0";
+
 		speed = 10;
 		leftSkiDirection = 0;
 		rightSkiDirection = 0;
 		height = 0;
-		xSpeed = 0;
+		xSpeed = targetXSpeed = 0.0f;
 		ySpeed = 0;
+
+		score = 0;
 	}
 	
 	// Update is called once per frame
@@ -71,7 +90,7 @@ public class Player : MonoBehaviour {
 		}
 	
 
-		if (Mathf.Abs (leftSkiDirection - rightSkiDirection) >= skiIntervals) {
+		if (Mathf.Abs (leftSkiDirection - rightSkiDirection) > skiIntervals) {
 			Debug.Log("is kill");
 		}
 	}
@@ -85,11 +104,18 @@ public class Player : MonoBehaviour {
 		leftSki.transform.eulerAngles = new Vector3 (0.0f, 0.0f, Mathf.LerpAngle (leftSki.transform.eulerAngles.z, leftSkiAngle, 0.1f));
 		rightSki.transform.eulerAngles = new Vector3 (0.0f, 0.0f, Mathf.LerpAngle (rightSki.transform.eulerAngles.z, rightSkiAngle, 0.1f));
 
-		xSpeed = Mathf.Cos ((totalSkiAngle + 90.0f) * Mathf.Deg2Rad) * xSpeedFactor;
 		if (height < 0.0f) {
 			height = 0.0f;
 			ySpeed = 0.0f;
+		}
+
+		if (height == 0.0f) {
+			targetXSpeed = Mathf.Cos ((totalSkiAngle + 90.0f) * Mathf.Deg2Rad) * xSpeedFactor;
+			xSpeed = Mathf.Lerp(xSpeed, targetXSpeed, xAcceleration * Time.fixedDeltaTime);
 		} else if (height > 0.0f) {
+			score++;
+			scoreText.text = score.ToString();
+
 			ySpeed -= gravity * Time.fixedDeltaTime;
 			height += ySpeed * Time.fixedDeltaTime;
 		}
@@ -110,7 +136,7 @@ public class Player : MonoBehaviour {
 					break;
 					
 				case Obstacle.obstacleType.RAMP:
-					ySpeed += 10;
+					ySpeed += 10 * (speed / 10.0f);
 					height += 0.001f;
 					break;
 					

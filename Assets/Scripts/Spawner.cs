@@ -28,10 +28,6 @@ public class Spawner : MonoBehaviour {
 			effects.Add (Instantiate (effectPrefabs [Random.Range(0, effectPrefabs.Length)]));
 	
 		for (int i = obstacles.Count-1; i >= 0; i--) {
-<<<<<<< HEAD
-			if (obstacles[i].GetComponent<Obstacle>().distance < 100){
-				player.onHitObstacle(obstacles[i].GetComponent<Obstacle>());
-=======
 			Obstacle obstacle = obstacles[i].GetComponent<Obstacle>();
 			if (obstacle.distance < 200){
 				if(!obstacle.hasCollided)
@@ -42,7 +38,6 @@ public class Spawner : MonoBehaviour {
 			}
 			if(obstacle.distance < 0)
 			{
->>>>>>> origin/master
 				Destroy(obstacles[i]);
 				obstacles.RemoveAt(i);
 			}
