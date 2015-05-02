@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-#define skiBoundary 5
-
 public class Player : MonoBehaviour {
+	public static int skiBoundary;
+
 	public int speed;
 	public int leftSkiDirection;
 	public int rightSkiDirection;
@@ -11,10 +11,12 @@ public class Player : MonoBehaviour {
 		get { return leftSkiDirection + rightSkiDirection; }
 	}
 	public int height;
-	// Use this for initialization
+
 	void Start () {
+		skiBoundary = 5;
 		speed = 10;
-		direction = 0;
+		leftSkiDirection = 0;
+		rightSkiDirection = 0;
 		height = 0;
 	}
 	

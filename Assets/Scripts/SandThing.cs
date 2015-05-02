@@ -2,7 +2,7 @@
 using System.Collections;
 
 enum objectType{
-	ROCK, RAMP, TREE, CABBAGES
+	ROCK, RAMP, TREE, CABBAGES, RIPPLE_ONE, RIPPLE_TWO, RIPPLE_THREE
 };
 
 public class SandThing : MonoBehaviour {
@@ -10,12 +10,28 @@ public class SandThing : MonoBehaviour {
 	public int distance;
 	public int xPos;
 	public int width;
-	obstacleType type;
+	objectType type;
 	bool collidable;
 
-	public void create(int setX, obstacleType setType){
+	public void create(int setX, objectType setType){
 		xPos = setX;
 		type = setType;
+		switch (type) {
+		case objectType.ROCK:
+			break;
+		case objectType.RAMP:
+			break;
+		case objectType.TREE:
+			break;
+		case objectType.CABBAGES:
+			break;
+		case objectType.RIPPLE_ONE:
+			break;
+		case objectType.RIPPLE_TWO:
+			break;
+		case objectType.RIPPLE_THREE:
+			break;
+		}
 	}
 
 	public Player player;
