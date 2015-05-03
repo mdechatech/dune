@@ -14,6 +14,9 @@ public class Player : MonoBehaviour {
 	[Header("Controls")]
 
 	[SerializeField]
+	private bool skillMode = true;
+
+	[SerializeField]
 	private int lives = 3;
 
 	[SerializeField]
@@ -222,6 +225,6 @@ public class Player : MonoBehaviour {
 
 	public void die()
 	{
-		Application.LoadLevel("Menu");
+		if(skillMode) Application.LoadLevel("Menu");
 	}
 }
